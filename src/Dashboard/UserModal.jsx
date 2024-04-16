@@ -1,7 +1,7 @@
 import React from "react"
 import { BsPersonCircle, BsBoxArrowRight } from "react-icons/bs"
 
-export default function UserModal({ open, onClose }) {
+export default function UserModal({ open, displayName, onClose }) {
   return (
     <div
       className={`transition-opacity ${
@@ -24,7 +24,7 @@ export default function UserModal({ open, onClose }) {
           style={{ justifyContent: "space-evenly" }}
         >
           <BsPersonCircle className="text-4xl" />
-          <h2 className="text-xl mt-1">User</h2>
+          <h2 className="text-xl mt-1">{displayName}</h2>
         </div>
         <hr></hr>
         <div

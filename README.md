@@ -18,3 +18,6 @@ weekly: contains all weekly budgets
             cost
         }] (array of objects of the budget, it includes title and cost, id for uniqueness) 
     }
+
+how to get budget list?
+- with user id

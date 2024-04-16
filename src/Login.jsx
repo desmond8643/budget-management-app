@@ -1,6 +1,9 @@
 import React from "react"
+import {useNavigate} from 'react-router-dom'
+import * as ROUTES from './routes'
 
 export default function Login() {
+  const navigate = useNavigate()
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="rounded-3xl border-2 w-72">
@@ -29,6 +32,7 @@ export default function Login() {
         <div className="mb-14 flex justify-center mt-4">
           <button
             className="rounded-2xl py-2 px-4 bg-buttonBlue"
+            onClick={() => navigate(ROUTES.REGISTER)}
           >
             Register
           </button>
