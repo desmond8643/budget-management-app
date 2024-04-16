@@ -1,6 +1,28 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 
-export default function RenameModal({ open, onClose, children }) {
+export default function RenameModal({
+  open,
+  onClose,
+  currentEditModal,
+  budgets,
+}) {
+  const [error, setError] = useState(false)
+  const [input, setInput] = useState("")
+
+  useEffect(() => {
+    const findObject = budgets.find(
+      (budget) => budget.docId === currentEditModal
+    )
+    const title = findObject && findObject.title
+    setInput(title || "")
+  }, [currentEditModal])
+
+  const handleRenameClick = () => {
+    if (input.length === 0) {
+      setError(true)
+    }
+  }
+
   return (
     <div
       className={`fixed inset-0 flex justify-center items-center transition-opacity ${
@@ -19,16 +41,29 @@ export default function RenameModal({ open, onClose, children }) {
           <h2 className="font-semibold text-2xl text-center">Rename Title</h2>
           <div className="mb-5 mt-7">
             <div className="flex justify-center mb-2">
-              <input type="text" className="w-52 border border-black" />
+              <input
+                type="text"
+                className="w-52 border border-black"
+                value={input}
+                onChange={({ target }) => setInput(target.value)}
+              />
             </div>
-            <h3 className="text-center text-red-500 font-semibold">Please Type Something</h3>
+            <h3 className="text-center text-red-500 font-semibold">
+              {error && "Please Type Something"}
+            </h3>
             <div className="flex justify-center mt-3 gap-7">
-              <button className="rounded-2xl py-1 px-4 bg-buttonBlue">
+              <button
+                className="rounded-2xl py-1 px-4 bg-buttonBlue"
+                onClick={handleRenameClick}
+              >
                 Rename
               </button>
               <button
                 className="rounded-2xl py-1 px-4 bg-buttonRed"
-                onClick={onClose}
+                onClick={() => {
+                  onClose()
+                  setError(false)
+                }}
               >
                 Cancel
               </button>

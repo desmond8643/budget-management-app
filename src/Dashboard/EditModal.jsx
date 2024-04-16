@@ -1,6 +1,17 @@
 import React from "react"
 
-export default function EditModal({ setRenameModalOpen, setDeleteModalOpen, open, onClose }) {
+export default function EditModal({
+  setRenameModalOpen,
+  setDeleteModalOpen,
+  open,
+  onClose,
+  currentEditModal,
+  budgets,
+}) {
+  const findObject = budgets.find((budget) => budget.docId === currentEditModal)
+  
+  const title = findObject && findObject.title
+
   return (
     <div
       className={`fixed inset-0 flex justify-center items-center transition-opacity ${
@@ -16,7 +27,7 @@ export default function EditModal({ setRenameModalOpen, setDeleteModalOpen, open
         className="absolute bg-white p-4 rounded-2xl shadow-lg w-80"
       >
         <div className="mt-3">
-          <h2 className="font-semibold text-2xl text-center">Budget 1</h2>
+          <h2 className="font-semibold text-2xl text-center">{title}</h2>
           <div className="mb-5 mt-3">
             <h2
               className="cursor-pointer text-2xl text-center w-auto border-t pt-1 pb-1"
@@ -27,10 +38,13 @@ export default function EditModal({ setRenameModalOpen, setDeleteModalOpen, open
             >
               Rename
             </h2>
-            <h2 className="cursor-pointer pt-1 pb-1 font-semibold text-2xl text-center border-t border-b text-red-500" onClick={() => {
-              setDeleteModalOpen(true)
-              onClose()
-            }}> 
+            <h2
+              className="cursor-pointer pt-1 pb-1 font-semibold text-2xl text-center border-t border-b text-red-500"
+              onClick={() => {
+                setDeleteModalOpen(true)
+                onClose()
+              }}
+            >
               Delete
             </h2>
             <h2

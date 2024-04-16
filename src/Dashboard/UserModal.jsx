@@ -11,13 +11,12 @@ export default function UserModal({ open, displayName, onClose }) {
       <div className="fixed inset-0" onClick={onClose}></div>
       <div
         style={{
-          position: "fixed",
           top: "80px",
           right: "30px",
           backgroundColor: "white",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
         }}
-        className="w-52 rounded-xl"
+        className="absolute w-52 rounded-xl"
       >
         <div
           className="flex mt-3 mb-3"

@@ -15,6 +15,8 @@ import { getUserBudgetByUsername } from "../services/firebase"
 
 export default function Dashboard({ user }) {
   const [editModalOpen, setEditModalOpen] = useState(false)
+  const [currentEditModal, setCurrentEditModal] = useState("")
+
   const [renameModalOpen, setRenameModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [addModalOpen, setAddModalOpen] = useState(false)
@@ -36,19 +38,24 @@ export default function Dashboard({ user }) {
 
   const MapBudgets = () => {
     return budgets.map((budget) => {
-      const { title, dateCreated } = budget
+      const { title, dateCreated, docId } = budget
       const date = new Date(dateCreated)
 
       const formattedDate = `${date.getDate()}/${
         date.getMonth() + 1
       }/${date.getFullYear()}`
 
+      let sum = 0
+
       return (
         <div>
           <BsThreeDotsVertical
             className="text-2xl cursor-pointer"
             style={{ position: "absolute", right: "30px" }}
-            onClick={() => setEditModalOpen(true)}
+            onClick={() => {
+              setEditModalOpen(true)
+              setCurrentEditModal(docId)
+            }}
           />
           <div
             className="m-3 cursor-pointer"
@@ -56,7 +63,7 @@ export default function Dashboard({ user }) {
           >
             <div className="flex" style={{ justifyContent: "space-between" }}>
               <h2 className="text-2xl">
-                {title} - ${}
+                {title} - ${sum}
               </h2>
             </div>
             <p>{formattedDate}</p>
@@ -93,11 +100,15 @@ export default function Dashboard({ user }) {
         setRenameModalOpen={setRenameModalOpen}
         setDeleteModalOpen={setDeleteModalOpen}
         open={editModalOpen}
+        currentEditModal={currentEditModal}
+        budgets={budgets}
         onClose={() => setEditModalOpen(false)}
       />
       <RenameModal
         open={renameModalOpen}
         onClose={() => setRenameModalOpen(false)}
+        currentEditModal={currentEditModal}
+        budgets={budgets}
       />
       <DeleteModal
         open={deleteModalOpen}
