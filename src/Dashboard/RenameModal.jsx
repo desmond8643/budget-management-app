@@ -1,4 +1,6 @@
+import { doc, updateDoc } from "firebase/firestore"
 import React, { useState, useEffect } from "react"
+import { db } from "../lib/firebase"
 
 export default function RenameModal({
   open,
@@ -11,15 +13,23 @@ export default function RenameModal({
 
   useEffect(() => {
     const findObject = budgets.find(
-      (budget) => budget.docId === currentEditModal
+      (budget) => budget.id === currentEditModal
     )
     const title = findObject && findObject.title
     setInput(title || "")
   }, [currentEditModal])
 
-  const handleRenameClick = () => {
+  const handleRenameClick = async () => {
     if (input.length === 0) {
       setError(true)
+    } else {
+      try {
+        onClose()
+        const documentRef = doc(db, "weekly", currentEditModal)
+        await updateDoc(documentRef, {title: input})
+      } catch(error) {
+        console.error("Error: ", error)
+      }
     }
   }
 

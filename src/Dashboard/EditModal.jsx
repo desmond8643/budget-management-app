@@ -8,7 +8,7 @@ export default function EditModal({
   currentEditModal,
   budgets,
 }) {
-  const findObject = budgets.find((budget) => budget.docId === currentEditModal)
+  const findObject = budgets.find((budget) => budget.id === currentEditModal)
   
   const title = findObject && findObject.title
 

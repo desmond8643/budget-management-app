@@ -12,6 +12,11 @@ import AddModal from "./AddModal"
 import UserModal from "./UserModal"
 import * as ROUTES from "../routes"
 import { getUserBudgetByUsername } from "../services/firebase"
+import { onSnapshot } from "firebase/firestore"
+import {
+  usersCollectionRef,
+  weeklyCollectionRef,
+} from "../lib/firestoreCollections"
 
 export default function Dashboard({ user }) {
   const [editModalOpen, setEditModalOpen] = useState(false)
@@ -28,17 +33,18 @@ export default function Dashboard({ user }) {
 
   useEffect(() => {
     async function getBudgets() {
-      const getBudgetList = await getUserBudgetByUsername(user.displayName)
-      setBudgets(getBudgetList)
+      const getUserInfo = await getUserBudgetByUsername(user.displayName)
+      const getWeeklySnapshot = onSnapshot(weeklyCollectionRef, (snapshot) => {
+        const arr = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        setBudgets([arr.find((doc) => doc.userId === getUserInfo.userId)])
+      })
     }
     getBudgets()
   }, [user.displayName])
 
-  console.log(budgets)
-
   const MapBudgets = () => {
     return budgets.map((budget) => {
-      const { title, dateCreated, docId } = budget
+      const { title, dateCreated, id } = budget
       const date = new Date(dateCreated)
 
       const formattedDate = `${date.getDate()}/${
@@ -47,14 +53,18 @@ export default function Dashboard({ user }) {
 
       let sum = 0
 
+      const handleEditModalOpen = (id) => {
+        setCurrentEditModal(id)
+        setEditModalOpen(true)
+      }
+
       return (
         <div>
           <BsThreeDotsVertical
             className="text-2xl cursor-pointer"
             style={{ position: "absolute", right: "30px" }}
             onClick={() => {
-              setEditModalOpen(true)
-              setCurrentEditModal(docId)
+              handleEditModalOpen(id)
             }}
           />
           <div
@@ -115,7 +125,11 @@ export default function Dashboard({ user }) {
         onClose={() => setDeleteModalOpen(false)}
       />
       <AddModal open={addModalOpen} onClose={() => setAddModalOpen(false)} />
-      <UserModal open={userModalOpen} displayName={user.displayName} onClose={() => setUserModalOpen(false)} />
+      <UserModal
+        open={userModalOpen}
+        displayName={user.displayName}
+        onClose={() => setUserModalOpen(false)}
+      />
       <BsFillPlusCircleFill
         style={{
           fontSize: "40px",
