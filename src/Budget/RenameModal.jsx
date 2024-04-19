@@ -1,6 +1,29 @@
-import React from "react"
+import { doc, updateDoc } from "firebase/firestore"
+import React, { useEffect, useState } from "react"
+import { db } from "../lib/firebase"
 
-export default function RenameModal({ open, onClose, children }) {
+export default function RenameModal({ open, onClose, title, id }) {
+  const [input, setInput] = useState("")
+  const [error, setError] = useState(false)
+
+  useEffect(() => {
+    setInput(title)
+  }, [title])
+
+  const handleRenameClick = async () => {
+    if (input.length === 0) {
+      setError(true)
+    } else {
+      try {
+        onClose()
+        const documentRef = doc(db, "weekly", id)
+        await updateDoc(documentRef, {title: input})
+      } catch(error) {
+        console.error("Error: ", error)
+      }
+    }
+  }
+
   return (
     <div
       className={`fixed inset-0 flex justify-center items-center transition-opacity ${
@@ -19,11 +42,13 @@ export default function RenameModal({ open, onClose, children }) {
           <h2 className="font-semibold text-2xl text-center">Rename Title</h2>
           <div className="mb-5 mt-7">
             <div className="flex justify-center mb-2">
-              <input type="text" className="w-52 border border-black" />
+              <input type="text" className="w-52 border border-black" value={input} onChange={({target}) => setInput(target.value)}/>
             </div>
-            <h3 className="text-center text-red-500 font-semibold">Please Type Something</h3>
+            {error && <h3 className="text-center text-red-500 font-semibold">
+              Please Type Something
+            </h3>}
             <div className="flex justify-center mt-3 gap-7">
-              <button className="rounded-2xl py-1 px-4 bg-buttonBlue">
+              <button className="rounded-2xl py-1 px-4 bg-buttonBlue" onClick={() => handleRenameClick()}>
                 Rename
               </button>
               <button

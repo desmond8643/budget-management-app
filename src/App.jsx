@@ -26,7 +26,7 @@ function App() {
         <Route path={ROUTES.LOGIN} element={<Login />} />
         <Route path={ROUTES.REGISTER} element={<Register />} />
         <Route path={ROUTES.DASHBOARD} element={<Dashboard user={user} />} />
-        <Route path={ROUTES.BUDGET} element={<Budget />} />
+        <Route path="/budget/:id" element={<Budget />} />
       </Route>
     )
   )

@@ -1,6 +1,7 @@
 import React from "react"
 
-export default function DeleteModal({ open, onClose }) {
+export default function DeleteModal({ open, onClose, currentEditModal, budgets }) {
+
   return (
     <div
       className={`fixed inset-0 flex justify-center items-center transition-opacity ${
@@ -17,7 +18,7 @@ export default function DeleteModal({ open, onClose }) {
       >
         <div className="mt-3">
           <h2 className="font-semibold text-2xl text-center">
-            Delete Budget 1?
+            Delete {}?
           </h2>
           <div className="mb-7 mt-7">
             <div className="flex justify-center">

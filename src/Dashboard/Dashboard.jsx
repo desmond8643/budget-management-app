@@ -10,13 +10,9 @@ import RenameModal from "./RenameModal"
 import DeleteModal from "./DeleteModal"
 import AddModal from "./AddModal"
 import UserModal from "./UserModal"
-import * as ROUTES from "../routes"
 import { getUserBudgetByUsername } from "../services/firebase"
 import { onSnapshot } from "firebase/firestore"
-import {
-  usersCollectionRef,
-  weeklyCollectionRef,
-} from "../lib/firestoreCollections"
+import { weeklyCollectionRef } from "../lib/firestoreCollections"
 
 export default function Dashboard({ user }) {
   const [editModalOpen, setEditModalOpen] = useState(false)
@@ -36,17 +32,25 @@ export default function Dashboard({ user }) {
       const getUserInfo = await getUserBudgetByUsername(user.displayName)
       const getWeeklySnapshot = onSnapshot(weeklyCollectionRef, (snapshot) => {
         const arr = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        setBudgets([arr.find((doc) => doc.userId === getUserInfo.userId)])
+        setBudgets(arr.filter((doc) => doc.userId === getUserInfo.userId))
       })
     }
     getBudgets()
   }, [user.displayName])
 
+  console.log(budgets)
+
   const MapBudgets = () => {
     return budgets.map((budget) => {
       const { title, dateCreated, id } = budget
-      const date = new Date(dateCreated)
 
+      if (!dateCreated) {
+        return null
+      }
+
+      const date = new Date(
+        dateCreated.seconds * 1000 + dateCreated.nanoseconds / 1e6
+      )
       const formattedDate = `${date.getDate()}/${
         date.getMonth() + 1
       }/${date.getFullYear()}`
@@ -69,7 +73,7 @@ export default function Dashboard({ user }) {
           />
           <div
             className="m-3 cursor-pointer"
-            onClick={() => navigate(ROUTES.BUDGET)}
+            onClick={() => navigate(`/budget/${id}`)}
           >
             <div className="flex" style={{ justifyContent: "space-between" }}>
               <h2 className="text-2xl">
@@ -123,8 +127,14 @@ export default function Dashboard({ user }) {
       <DeleteModal
         open={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
+        currentEditModal={currentEditModal}
+        budgets={budgets}
       />
-      <AddModal open={addModalOpen} onClose={() => setAddModalOpen(false)} />
+      <AddModal
+        open={addModalOpen}
+        onClose={() => setAddModalOpen(false)}
+        userId={user.uid}
+      />
       <UserModal
         open={userModalOpen}
         displayName={user.displayName}
