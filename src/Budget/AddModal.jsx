@@ -1,4 +1,4 @@
-import { FieldValue, doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore"
 import React, { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { db } from "../lib/firebase"
@@ -24,9 +24,6 @@ export default function AddModal({ open, onClose, day, id }) {
       return
     }
 
-    setTitleInput("")
-    setCostInput("")
-
     try {
       const addId = uuidv4()
       onClose()
@@ -41,6 +38,11 @@ export default function AddModal({ open, onClose, day, id }) {
       })
 
       await setDoc(documentRef, existingData)
+
+      setTitleInput("")
+      setCostInput("")
+      setTitleError(false)
+      setCostError(false)
 
     } catch (error) {
       console.error("Error: ", error)
@@ -70,6 +72,8 @@ export default function AddModal({ open, onClose, day, id }) {
                 type="text"
                 className="w-52 border border-black"
                 onChange={({ target }) => setTitleInput(target.value)}
+                value={titleInput}
+                
               />
             </div>
             <h3 className="text-center mb-2">Cost</h3>
@@ -78,6 +82,8 @@ export default function AddModal({ open, onClose, day, id }) {
                 type="text"
                 className="w-52 border border-black"
                 onChange={({ target }) => setCostInput(target.value)}
+                value={costInput}
+              
               />
             </div>
             {titleError && (

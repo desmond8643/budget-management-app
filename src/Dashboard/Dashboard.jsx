@@ -13,6 +13,7 @@ import UserModal from "./UserModal"
 import { getUserBudgetByUsername } from "../services/firebase"
 import { onSnapshot } from "firebase/firestore"
 import { weeklyCollectionRef } from "../lib/firestoreCollections"
+import { calculateAllSum } from "../Budget/logic"
 
 export default function Dashboard({ user }) {
   const [editModalOpen, setEditModalOpen] = useState(false)
@@ -55,7 +56,7 @@ export default function Dashboard({ user }) {
         date.getMonth() + 1
       }/${date.getFullYear()}`
 
-      let sum = 0
+      const sum = calculateAllSum(budget)
 
       const handleEditModalOpen = (id) => {
         setCurrentEditModal(id)

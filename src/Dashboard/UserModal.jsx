@@ -1,7 +1,13 @@
 import React from "react"
 import { BsPersonCircle, BsBoxArrowRight } from "react-icons/bs"
+import * as ROUTES from "../routes"
+import { useNavigate } from "react-router-dom"
+import FirebaseContext from "../context/firebase"
 
 export default function UserModal({ open, displayName, onClose }) {
+  const { firebase } = React.useContext(FirebaseContext)
+  const navigate = useNavigate()
+  
   return (
     <div
       className={`transition-opacity ${
@@ -31,7 +37,15 @@ export default function UserModal({ open, displayName, onClose }) {
           style={{ justifyContent: "space-around" }}
         >
           <BsBoxArrowRight className="text-3xl" />
-          <h2 className="mr-5">Logout</h2>
+          <h2
+            className="mr-5"
+            onClick={() => {
+              firebase.auth().signOut()
+              navigate(ROUTES.LOGIN)
+            }}
+          >
+            Logout
+          </h2>
         </div>
       </div>
     </div>

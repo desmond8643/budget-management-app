@@ -1,6 +1,31 @@
+import { doc, setDoc } from "firebase/firestore"
 import React from "react"
+import { db } from "../lib/firebase"
 
-export default function DeleteModal({ open, onClose, currentEditModal, budgets }) {
+export default function DeleteModal({
+  open,
+  onClose,
+  currentDay,
+  budget,
+  eventId,
+  id,
+}) {
+  const arr = budget[currentDay]
+  const findObj = arr && arr.find((obj) => obj.id === eventId)
+  const title = findObj && findObj.title
+
+  const handleDeleteClick = async () => {
+    try {
+      onClose()
+      const documentRef = doc(db, "weekly", id)
+      const existingData = arr.filter((obj) => obj.id !== eventId)
+      const newBudget = { ...budget, [currentDay]: existingData }
+
+      await setDoc(documentRef, newBudget)
+    } catch (error) {
+      console.error("Error: ", error)
+    }
+  }
 
   return (
     <div
@@ -18,11 +43,14 @@ export default function DeleteModal({ open, onClose, currentEditModal, budgets }
       >
         <div className="mt-3">
           <h2 className="font-semibold text-2xl text-center">
-            Delete {}?
+            Delete {title}?
           </h2>
           <div className="mb-7 mt-7">
             <div className="flex justify-center">
-              <button className="text-white rounded-2xl py-1 px-4 bg-buttonRed">
+              <button
+                className="text-white rounded-2xl py-1 px-4 bg-buttonRed"
+                onClick={() => handleDeleteClick()}
+              >
                 Delete
               </button>
             </div>

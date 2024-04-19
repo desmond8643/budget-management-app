@@ -1,8 +1,9 @@
-import React from "react"
+import React, {useEffect} from "react"
 import { Link, useNavigate } from "react-router-dom"
-import FirebaseContext from "../context/firebase"
-import * as ROUTES from "../routes"
-import { doesUsernameExist } from "../services/firebase"
+import FirebaseContext from "./context/firebase"
+import * as ROUTES from "./routes"
+import { doesUsernameExist } from "./services/firebase"
+import { onAuthStateChanged } from "firebase/auth"
 
 export default function Register() {
   const { firebase } = React.useContext(FirebaseContext)
@@ -14,6 +15,16 @@ export default function Register() {
 
   const [error, setError] = React.useState("")
   const isInvalid = password === "" || emailAddress === ""
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebase.auth(), (user) => {
+      if (user) {
+        navigate(ROUTES.DASHBOARD)
+      }
+    })
+
+    return () => unsubscribe()
+  }, [firebase, navigate])
 
   const handleRegister = async (event) => {
     event.preventDefault()
@@ -36,13 +47,13 @@ export default function Register() {
           dateCreated: Date.now(),
         })
 
-        navigate(ROUTES.DASHBOARD)
       } catch (error) {
         setEmailAddress("")
         setPassword("")
         setUsername("")
         setError(error.message)
       }
+
     } else {
       setError("Username already exists")
     }
@@ -91,7 +102,7 @@ export default function Register() {
             <button
               className="rounded-2xl py-2 px-4"
               style={{ backgroundColor: `${isInvalid ? "gray" : "#0CC0DF"}` }}
-              disable={isInvalid}
+              disabled={isInvalid}
               type="submit"
             >
               Register
