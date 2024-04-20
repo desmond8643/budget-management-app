@@ -68,7 +68,7 @@ export default function Budget() {
       return sum
     }
     
-    const sum = calculateSum(arr)
+    const sum = calculateSum(arr).toFixed(2)
 
     const Object = ({ title, cost, id }) => {
       return (

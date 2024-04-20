@@ -15,6 +15,8 @@ import { firebase, FieldValue } from "./lib/firebase"
 import useAuthListener from "./hooks/use-auth-listener"
 
 import "./index.css"
+import IsUserLoggedIn from "./helper/is-user-logged-in"
+import ProtectedRoute from "./helper/protected-route"
 
 function App() {
   const { user } = useAuthListener()
@@ -22,10 +24,14 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route>
-        <Route path={ROUTES.LOGIN} element={<Login />} />
-        <Route path={ROUTES.REGISTER} element={<Register />} />
-        <Route path={ROUTES.DASHBOARD} element={<Dashboard user={user} />} />
-        <Route path="/budget/:id" element={<Budget />} />
+        <Route element={<IsUserLoggedIn user={user}/>}>
+          <Route path={ROUTES.LOGIN} element={<Login />} />
+          <Route path={ROUTES.REGISTER} element={<Register />} />
+        </Route>
+        <Route element={<ProtectedRoute user={user}/>}>
+          <Route path={ROUTES.DASHBOARD} element={<Dashboard user={user} />} />
+          <Route path="/budget/:id" element={<Budget />} />
+        </Route>
       </Route>
     )
   )

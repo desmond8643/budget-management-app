@@ -32,7 +32,7 @@ export default function Login() {
         <h1 className="mt-10 text-center text-5xl font-semibold">Budget</h1>
         <form onSubmit={handleLogin} method="POST">
           <div className="mt-10">
-            <p className="text-center mb-2">Username</p>
+            <p className="text-center mb-2">Email</p>
             <input
               className="w-52 border border-gray-300 p-0 block mx-auto"
               type="text"
