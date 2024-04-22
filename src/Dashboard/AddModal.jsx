@@ -2,7 +2,8 @@ import { Timestamp, addDoc, serverTimestamp } from "firebase/firestore"
 import React, { useState } from "react"
 import { weeklyCollectionRef } from "../lib/firestoreCollections"
 
-export default function AddModal({ open, onClose, userId }) {
+export default function AddModal({ open, onClose, userId, theme }) {
+  console.log(theme)
   const [error, setError] = useState(false)
   const [input, setInput] = useState("")
 
@@ -42,7 +43,9 @@ export default function AddModal({ open, onClose, userId }) {
       ></div>
       <div
         style={{ padding: "0px" }}
-        className="absolute bg-white p-4 rounded-2xl shadow-lg w-80"
+        className={`absolute ${
+          theme === "dark" ? "bg-foregroundDark" : "bg-white"
+        } p-4 rounded-2xl shadow-lg w-80`}
       >
         <div className="mt-3">
           <h2 className="font-semibold text-2xl text-center">
@@ -52,7 +55,7 @@ export default function AddModal({ open, onClose, userId }) {
             <div className="flex justify-center mb-2">
               <input
                 type="text"
-                className="w-52 border border-black"
+                className={`w-52 border ${theme === 'dark' ? 'bg-backgroundDark': 'border-black'}`}
                 onChange={({ target }) => setInput(target.value)}
               />
             </div>

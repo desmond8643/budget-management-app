@@ -1,28 +1,40 @@
 import React from "react"
-import { BsPersonCircle, BsBoxArrowRight } from "react-icons/bs"
+import {
+  BsPersonCircle,
+  BsBoxArrowRight,
+  BsToggleOff,
+  BsToggleOn,
+} from "react-icons/bs"
 import * as ROUTES from "../routes"
 import { useNavigate } from "react-router-dom"
 import FirebaseContext from "../context/firebase"
 
-export default function UserModal({ open, displayName, onClose }) {
+export default function UserModal({
+  open,
+  displayName,
+  onClose,
+  theme,
+  setTheme,
+}) {
   const { firebase } = React.useContext(FirebaseContext)
   const navigate = useNavigate()
-  
+
   return (
     <div
       className={`transition-opacity ${
         open ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
+      } ${theme === "dark" && "text-white"}`}
     >
       <div className="fixed inset-0" onClick={onClose}></div>
       <div
         style={{
           top: "80px",
           right: "30px",
-          backgroundColor: "white",
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
         }}
-        className="absolute w-52 rounded-xl"
+        className={`absolute w-52 rounded-xl ${
+          theme === "dark" ? "bg-black" : "bg-white"
+        }`}
       >
         <div
           className="flex mt-3 mb-3"
@@ -32,6 +44,36 @@ export default function UserModal({ open, displayName, onClose }) {
           <h2 className="text-xl mt-1">{displayName}</h2>
         </div>
         <hr></hr>
+        {theme === "light" && (
+          <div
+            className="flex mt-3 mb-2 cursor-pointer"
+            style={{ justifyContent: "space-around" }}
+          >
+            <h2 className="ml-5">Light Mode</h2>
+            <BsToggleOff
+              className="text-3xl cursor-pointer"
+              onClick={() => {
+                setTheme("dark")
+                localStorage.setItem("theme", "dark")
+              }}
+            />
+          </div>
+        )}
+        {theme === "dark" && (
+          <div
+            className="flex mt-3 mb-2 cursor-pointer"
+            style={{ justifyContent: "space-around" }}
+          >
+            <h2 className="ml-5">Dark Mode</h2>
+            <BsToggleOn
+              className="text-3xl cursor-pointer"
+              onClick={() => {
+                setTheme("light")
+                localStorage.setItem("theme", "light")
+              }}
+            />
+          </div>
+        )}
         <div
           className="flex mt-3 mb-2 cursor-pointer"
           style={{ justifyContent: "space-around" }}

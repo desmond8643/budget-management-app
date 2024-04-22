@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { db } from "../lib/firebase"
 
-export default function AddModal({ open, onClose, day, id }) {
+export default function AddModal({ open, onClose, day, id, theme }) {
   const [titleInput, setTitleInput] = useState("")
   const [costInput, setCostInput] = useState("")
   const [titleError, setTitleError] = useState(false)
@@ -31,7 +31,7 @@ export default function AddModal({ open, onClose, day, id }) {
       const documentSnapshot = await getDoc(documentRef)
 
       const existingData = documentSnapshot.data()
-      existingData[day].push({
+      existingData[day.toLowerCase()].push({
         id: addId,
         title: titleInput,
         cost: costInput,
@@ -61,7 +61,7 @@ export default function AddModal({ open, onClose, day, id }) {
       ></div>
       <div
         style={{ padding: "0px" }}
-        className="absolute bg-white p-4 rounded-2xl shadow-lg w-80"
+        className={`absolute ${theme === 'dark' ? 'bg-foregroundDark' : 'bg-white'} p-4 rounded-2xl shadow-lg w-80`}
       >
         <div className="mt-3">
           <h2 className="font-semibold text-2xl text-center">Add Event</h2>
@@ -70,7 +70,7 @@ export default function AddModal({ open, onClose, day, id }) {
             <div className="flex justify-center mb-2">
               <input
                 type="text"
-                className="w-52 border border-black"
+                className={`w-52 border ${theme === 'dark' ? 'bg-backgroundDark': "border-black"}`}
                 onChange={({ target }) => setTitleInput(target.value)}
                 value={titleInput}
                 
@@ -80,7 +80,7 @@ export default function AddModal({ open, onClose, day, id }) {
             <div className="flex justify-center mb-2">
               <input
                 type="text"
-                className="w-52 border border-black"
+                className={`w-52 border ${theme === 'dark' ? 'bg-backgroundDark': "border-black"}`}
                 onChange={({ target }) => setCostInput(target.value)}
                 value={costInput}
               

@@ -2,7 +2,7 @@ import { doc, updateDoc } from "firebase/firestore"
 import React, { useEffect, useState } from "react"
 import { db } from "../lib/firebase"
 
-export default function RenameModal({ open, onClose, title, id }) {
+export default function RenameModal({ open, onClose, title, id, theme }) {
   const [input, setInput] = useState("")
   const [error, setError] = useState(false)
 
@@ -17,8 +17,8 @@ export default function RenameModal({ open, onClose, title, id }) {
       try {
         onClose()
         const documentRef = doc(db, "weekly", id)
-        await updateDoc(documentRef, {title: input})
-      } catch(error) {
+        await updateDoc(documentRef, { title: input })
+      } catch (error) {
         console.error("Error: ", error)
       }
     }
@@ -36,19 +36,33 @@ export default function RenameModal({ open, onClose, title, id }) {
       ></div>
       <div
         style={{ padding: "0px" }}
-        className="absolute bg-white p-4 rounded-2xl shadow-lg w-80"
+        className={`absolute ${
+          theme === "dark" ? "bg-foregroundDark" : "bg-white"
+        } p-4 rounded-2xl shadow-lg w-80`}
       >
         <div className="mt-3">
           <h2 className="font-semibold text-2xl text-center">Rename Title</h2>
           <div className="mb-5 mt-7">
             <div className="flex justify-center mb-2">
-              <input type="text" className="w-52 border border-black" value={input} onChange={({target}) => setInput(target.value)}/>
+              <input
+                type="text"
+                className={`w-52 border ${
+                  theme === "dark" ? "bg-backgroundDark" : "border-black"
+                }`}
+                value={input}
+                onChange={({ target }) => setInput(target.value)}
+              />
             </div>
-            {error && <h3 className="text-center text-red-500 font-semibold">
-              Please Type Something
-            </h3>}
+            {error && (
+              <h3 className="text-center text-red-500 font-semibold">
+                Please Type Something
+              </h3>
+            )}
             <div className="flex justify-center mt-3 gap-7">
-              <button className="rounded-2xl py-1 px-4 bg-buttonBlue" onClick={() => handleRenameClick()}>
+              <button
+                className="rounded-2xl py-1 px-4 bg-buttonBlue"
+                onClick={() => handleRenameClick()}
+              >
                 Rename
               </button>
               <button

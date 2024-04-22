@@ -5,7 +5,9 @@ export default {
     extend: {
       colors: {
         buttonBlue: "#0CC0DF",
-        buttonRed: '#FF5757'
+        buttonRed: '#FF5757',
+        backgroundDark: '#2A2438',
+        foregroundDark: '#352F44'
       }
     },
   },

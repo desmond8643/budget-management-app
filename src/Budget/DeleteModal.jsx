@@ -9,8 +9,9 @@ export default function DeleteModal({
   budget,
   eventId,
   id,
+  theme
 }) {
-  const arr = budget[currentDay]
+  const arr = budget[currentDay.toLowerCase()]
   const findObj = arr && arr.find((obj) => obj.id === eventId)
   const title = findObj && findObj.title
 
@@ -39,7 +40,7 @@ export default function DeleteModal({
       ></div>
       <div
         style={{ padding: "0px" }}
-        className="absolute bg-white p-4 rounded-2xl shadow-lg w-80"
+        className={`absolute ${theme === 'dark'? 'bg-foregroundDark':'bg-white'} p-4 rounded-2xl shadow-lg w-80`}
       >
         <div className="mt-3">
           <h2 className="font-semibold text-2xl text-center">
@@ -56,7 +57,7 @@ export default function DeleteModal({
             </div>
             <div className="flex justify-center mt-3">
               <button
-                className="rounded-2xl py-1 px-4 border border-black"
+                className={`rounded-2xl py-1 px-4 border ${theme === 'dark' ? 'border-white' : 'border-black'}`}
                 onClick={onClose}
               >
                 Cancel

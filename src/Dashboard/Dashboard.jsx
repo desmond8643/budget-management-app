@@ -15,7 +15,7 @@ import { onSnapshot } from "firebase/firestore"
 import { weeklyCollectionRef } from "../lib/firestoreCollections"
 import { calculateAllSum } from "../Budget/logic"
 
-export default function Dashboard({ user }) {
+export default function Dashboard({ user, theme, setTheme }) {
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [currentEditModal, setCurrentEditModal] = useState("")
 
@@ -90,7 +90,7 @@ export default function Dashboard({ user }) {
   }
 
   return (
-    <div className="mt-5 mx-5">
+    <div className={`pt-5 px-5 ${theme === 'dark' && 'bg-backgroundDark text-white'}`}>
       <div
         style={{ display: "flex", justifyContent: "space-between" }}
         className="items-center mb-8"
@@ -102,7 +102,7 @@ export default function Dashboard({ user }) {
           onClick={() => setUserModalOpen(true)}
         />
       </div>
-      <div className="rounded-3xl border-2 w-auto h-screen">
+      <div className={`rounded-3xl border-2 w-auto h-screen ${theme === 'dark' && "bg-foregroundDark"}`}>
         {budgets.length === 0 ? (
           <div className="flex justify-center items-center h-screen">
             <h1 className="text-4xl font-semibold">No budget list yet</h1>
@@ -118,28 +118,34 @@ export default function Dashboard({ user }) {
         currentEditModal={currentEditModal}
         budgets={budgets}
         onClose={() => setEditModalOpen(false)}
+        theme={theme}
       />
       <RenameModal
         open={renameModalOpen}
         onClose={() => setRenameModalOpen(false)}
         currentEditModal={currentEditModal}
         budgets={budgets}
+        theme={theme}
       />
       <DeleteModal
         open={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         currentEditModal={currentEditModal}
         budgets={budgets}
+        theme={theme}
       />
       <AddModal
         open={addModalOpen}
         onClose={() => setAddModalOpen(false)}
         userId={user.uid}
+        theme={theme}
       />
       <UserModal
         open={userModalOpen}
         displayName={user.displayName}
         onClose={() => setUserModalOpen(false)}
+        theme={theme}
+        setTheme={setTheme}
       />
       <BsFillPlusCircleFill
         style={{

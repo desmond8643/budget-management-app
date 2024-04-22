@@ -7,9 +7,10 @@ export default function EditModal({
   onClose,
   currentEditModal,
   budgets,
+  theme,
 }) {
   const findObject = budgets.find((budget) => budget.id === currentEditModal)
-  
+
   const title = findObject && findObject.title
 
   return (
@@ -24,7 +25,9 @@ export default function EditModal({
       ></div>
       <div
         style={{ padding: "0px" }}
-        className="absolute bg-white p-4 rounded-2xl shadow-lg w-80"
+        className={`absolute ${
+          theme === "dark" ? "bg-foregroundDark" : "bg-white"
+        } p-4 rounded-2xl shadow-lg w-80`}
       >
         <div className="mt-3">
           <h2 className="font-semibold text-2xl text-center">{title}</h2>

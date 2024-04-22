@@ -1,4 +1,4 @@
 export const LOGIN = '/login'
 export const REGISTER = '/register'
-export const DASHBOARD = '/dashboard'
+export const DASHBOARD = '/'
 export const BUDGET = '/budget'
