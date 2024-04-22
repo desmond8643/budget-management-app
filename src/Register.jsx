@@ -5,7 +5,7 @@ import * as ROUTES from "./routes"
 import { doesUsernameExist } from "./services/firebase"
 import { onAuthStateChanged } from "firebase/auth"
 
-export default function Register() {
+export default function Register({theme}) {
   const { firebase } = React.useContext(FirebaseContext)
   const navigate = useNavigate()
 
@@ -60,8 +60,8 @@ export default function Register() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="rounded-3xl border-2 w-72">
+    <div className={`flex justify-center items-center h-screen ${theme === 'dark' && 'bg-backgroundDark text-white'}`}>
+      <div className={`rounded-3xl border-2 w-72 ${theme === 'dark' && 'bg-foregroundDark'}`}>
         <h1 className="mt-10 text-center text-5xl font-semibold">Budget</h1>
         <h2
           className="mt-2 text-center font-semibold"
@@ -73,7 +73,7 @@ export default function Register() {
           <div className="mt-5">
             <p className="text-center mb-2">Email</p>
             <input
-              className="w-52 border border-gray-300 p-0 block mx-auto"
+              className="w-52 border border-gray-300 p-0 block mx-auto text-black"
               type="text"
               onChange={({ target }) => setEmailAddress(target.value)}
               value={emailAddress}
@@ -82,7 +82,7 @@ export default function Register() {
           <div className="mt-5">
             <p className="text-center mb-2">Username</p>
             <input
-              className="w-52 border border-gray-300 p-0 block mx-auto"
+              className="w-52 border border-gray-300 p-0 block mx-auto text-black"
               type="text"
               onChange={({ target }) => setUsername(target.value)}
               value={username}
@@ -91,7 +91,7 @@ export default function Register() {
           <div className="mt-5 mb-2">
             <p className="text-center mb-2">Password</p>
             <input
-              className="w-52 border border-gray-300 p-0 block mx-auto"
+              className="w-52 border border-gray-300 p-0 block mx-auto text-black"
               type="password"
               onChange={({ target }) => setPassword(target.value)}
               value={password}
@@ -100,8 +100,7 @@ export default function Register() {
           {error && <p className="text-center text-red-500">{error}</p>}
           <div className="mb-3 flex justify-center mt-8">
             <button
-              className="rounded-2xl py-2 px-4"
-              style={{ backgroundColor: `${isInvalid ? "gray" : "#0CC0DF"}` }}
+              className={`rounded-2xl py-2 px-4 ${theme === 'dark' ? 'bg-buttonBlueDark' : "bg-buttonBlue"}`}
               disabled={isInvalid}
               type="submit"
             >
@@ -110,7 +109,7 @@ export default function Register() {
           </div>
         </form>
         <Link to="/login">
-          <p className="mb-14 text-center underline">
+          <p className="mb-14 text-center hover:underline">
             Have an account? Sign In
           </p>
         </Link>

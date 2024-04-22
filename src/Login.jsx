@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import * as ROUTES from "./routes"
 import FirebaseContext from "./context/firebase"
 
-export default function Login() {
+export default function Login({theme}) {
   const navigate = useNavigate()
   const { firebase } = React.useContext(FirebaseContext)
 
@@ -27,14 +27,14 @@ export default function Login() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="rounded-3xl border-2 w-72">
+    <div className={`flex justify-center items-center h-screen ${theme === 'dark' && 'bg-backgroundDark text-white'}`}>
+      <div className={`rounded-3xl border-2 w-72 ${theme === 'dark' && 'bg-foregroundDark'}`}>
         <h1 className="mt-10 text-center text-5xl font-semibold">Budget</h1>
         <form onSubmit={handleLogin} method="POST">
           <div className="mt-10">
             <p className="text-center mb-2">Email</p>
             <input
-              className="w-52 border border-gray-300 p-0 block mx-auto"
+              className="w-52 border border-gray-300 p-0 block mx-auto text-black"
               type="text"
               onChange={({ target }) => setEmailAddress(target.value)}
               value={emailAddress}
@@ -43,7 +43,7 @@ export default function Login() {
           <div className="mt-5 mb-5">
             <p className="text-center mb-2">Password</p>
             <input
-              className="w-52 border border-gray-300 p-0 block mx-auto"
+              className="w-52 border border-gray-300 p-0 block mx-auto text-black"
               type="password"
               onChange={({ target }) => setPassword(target.value)}
               value={password}
@@ -52,7 +52,7 @@ export default function Login() {
           {error && <p className="text-center text-red-500 mb-5">{error}</p>}
           <div className="flex justify-center">
             <button
-              className="rounded-2xl py-2 px-4 bg-buttonBlue"
+              className={`rounded-2xl py-2 px-4 ${theme === 'dark' ? 'bg-buttonBlueDark' : "bg-buttonBlue"}`}
               type="submit"
             >
               Login
@@ -60,7 +60,7 @@ export default function Login() {
           </div>
           <div className="mb-14 flex justify-center mt-4">
             <button
-              className="rounded-2xl py-2 px-4 bg-buttonBlue"
+              className={`rounded-2xl py-2 px-4 ${theme === 'dark' ? 'bg-buttonBlueDark' : "bg-buttonBlue"}`}
               onClick={() => navigate(ROUTES.REGISTER)}
             >
               Register
