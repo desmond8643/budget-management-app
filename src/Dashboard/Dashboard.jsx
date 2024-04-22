@@ -16,16 +16,14 @@ import { weeklyCollectionRef } from "../lib/firestoreCollections"
 import { calculateAllSum } from "../Budget/logic"
 
 export default function Dashboard({ user, theme, setTheme }) {
+  const navigate = useNavigate()
+
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [currentEditModal, setCurrentEditModal] = useState("")
-
   const [renameModalOpen, setRenameModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [addModalOpen, setAddModalOpen] = useState(false)
   const [userModalOpen, setUserModalOpen] = useState(false)
-
-  const navigate = useNavigate()
-
   const [budgets, setBudgets] = useState([])
 
   useEffect(() => {
@@ -38,8 +36,6 @@ export default function Dashboard({ user, theme, setTheme }) {
     }
     getBudgets()
   }, [user.displayName])
-
-  console.log(budgets)
 
   const MapBudgets = () => {
     return budgets.map((budget) => {
