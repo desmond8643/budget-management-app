@@ -3,7 +3,6 @@ import React, { useState } from "react"
 import { weeklyCollectionRef } from "../lib/firestoreCollections"
 
 export default function AddModal({ open, onClose, userId, theme }) {
-  console.log(theme)
   const [error, setError] = useState(false)
   const [input, setInput] = useState("")
 
