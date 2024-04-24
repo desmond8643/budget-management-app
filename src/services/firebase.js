@@ -13,17 +13,7 @@ export async function doesUsernameExist(username) {
 export async function getUserBudgetByUsername(username) {
   const [user] = await getUserByUsername(username)
 
-//   const result = await firebase
-//     .firestore()
-//     .collection("weekly")
-//     .where("userId", "==", user.userId)
-//     .get()
-
     return user
-//   return result.docs.map((item) => ({
-//     ...item.data(),
-//     docId: item.id,
-//   }))
 }
 
 export async function getUserByUsername(username) {

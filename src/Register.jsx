@@ -47,6 +47,16 @@ export default function Register({theme}) {
           dateCreated: Date.now(),
         })
 
+        await firebase.firestore().collection("emojis").add({
+          userId: createdUserResult.user.uid,
+          emojis: [
+            {emoji: '🚌', description: 'Transport'},
+            {emoji: '🍗', description: 'Food'},
+            {emoji: '🎮', description: 'Entertainment'},
+            {emoji: '🛒', description: 'Shopping'}
+          ]
+        })
+
       } catch (error) {
         setEmailAddress("")
         setPassword("")

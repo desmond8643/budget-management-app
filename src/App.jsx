@@ -18,6 +18,7 @@ import "./index.css"
 import IsUserLoggedIn from "./helper/is-user-logged-in"
 import ProtectedRoute from "./helper/protected-route"
 import NotFound from "./NotFound"
+import ExpenseEmoji from "./ExpenseEmoji/ExpenseEmoji"
 
 function App() {
   const { user } = useAuthListener()
@@ -38,6 +39,7 @@ function App() {
               <Dashboard theme={theme} setTheme={setTheme} user={user} />
             }
           />
+          <Route path={ROUTES.EMOJI} element={<ExpenseEmoji theme={theme} user={user} />} />
           <Route>
             <Route path="/budget/:id" element={<Budget theme={theme} />} />
           </Route>

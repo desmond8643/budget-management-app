@@ -4,6 +4,7 @@ import {
   BsBoxArrowRight,
   BsToggleOff,
   BsToggleOn,
+  BsEmojiSmile
 } from "react-icons/bs"
 import * as ROUTES from "../routes"
 import { useNavigate } from "react-router-dom"
@@ -44,6 +45,20 @@ export default function UserModal({
           <h2 className="text-xl mt-1">{displayName}</h2>
         </div>
         <hr></hr>
+        <div
+          className="flex mt-3 mb-5 cursor-pointer"
+          style={{ justifyContent: "space-around" }}
+        >
+          <BsEmojiSmile className="text-3xl ml-3" />
+          <h2
+            className="mr-5"
+            onClick={() => {
+              navigate(ROUTES.EMOJI)
+            }}
+          >
+            Emoji Expenses
+          </h2>
+        </div>
         {theme === "light" && (
           <div
             className="flex mt-3 mb-2 cursor-pointer"
