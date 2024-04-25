@@ -5,14 +5,20 @@ import { emojisCollectionRef } from "../lib/firestoreCollections"
 import * as ROUTES from "../routes"
 import { BsChevronLeft, BsPlusCircle } from "react-icons/bs"
 import AddModal from "./AddModal"
+import EditModal from "./EditModal"
+import DeleteModal from "./DeleteModal"
 
 export default function ExpenseEmoji({ theme, user }) {
   const navigate = useNavigate()
 
   const [emojisObj, setEmojisObj] = useState({})
-  const [addModal, setAddModal] = useState(true)
+  const [addModal, setAddModal] = useState(false)
+  const [editModal, setEditModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [currentEditEmoji, setCurrentEditEmoji] = useState("")
+
   console.log(emojisObj)
-  const { emojis } = emojisObj
+  const { emojis, id } = emojisObj
 
   const emojiContainerStyle = {
     backgroundColor: theme === "dark" ? "#6b7280" : "#D9D9D9",
@@ -26,7 +32,6 @@ export default function ExpenseEmoji({ theme, user }) {
   }, [])
 
   const MapEmoji = () => {
-    
     return (
       emojis &&
       emojis.map((emojiObj) => {
@@ -35,6 +40,10 @@ export default function ExpenseEmoji({ theme, user }) {
           <div
             className="flex justify-center bg-gray-500 rounded-2xl pt-4 pb-4 select-none cursor-pointer mt-5"
             style={emojiContainerStyle}
+            onClick={() => {
+              setEditModal(true)
+              setCurrentEditEmoji(description)
+            }}
           >
             <h3 className="text-2xl mr-3" style={{ lineHeight: "1.1" }}>
               {emoji}
@@ -82,6 +91,21 @@ export default function ExpenseEmoji({ theme, user }) {
         theme={theme}
         onClose={() => setAddModal(false)}
         emojis={emojis}
+        id={id}
+      />
+      <EditModal
+        theme={theme}
+        onClose={() => setEditModal(false)}
+        currentEditEmoji={currentEditEmoji}
+        open={editModal}
+        setDeleteModal={setDeleteModal}
+      />
+      <DeleteModal
+        theme={theme}
+        onClose={() => setDeleteModal(false)}
+        open={deleteModal}
+        currentEditEmoji={currentEditEmoji}
+        id={id}
       />
     </div>
   )

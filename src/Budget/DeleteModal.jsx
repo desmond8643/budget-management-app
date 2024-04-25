@@ -20,7 +20,7 @@ export default function DeleteModal({
       onClose()
       const documentRef = doc(db, "weekly", id)
       const existingData = arr.filter((obj) => obj.id !== eventId)
-      const newBudget = { ...budget, [currentDay]: existingData }
+      const newBudget = { ...budget, [currentDay.toLowerCase()]: existingData }
 
       await setDoc(documentRef, newBudget)
     } catch (error) {

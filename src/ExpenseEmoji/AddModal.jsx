@@ -1,11 +1,14 @@
-import { addDoc, serverTimestamp } from "firebase/firestore"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useReducer, useState, useMemo } from "react"
+import SelectEmojiModal from "./SelectEmojiModal"
 import { emojisCollectionRef } from "../lib/firestoreCollections"
+import { db } from "../lib/firebase"
+import { doc, getDoc, setDoc } from "firebase/firestore"
 
-export default function AddModal({ open, onClose, theme, emojis }) {
+export default function AddModal({ open, onClose, theme, emojis, id }) {
   const [error, setError] = useState(false)
   const [input, setInput] = useState("")
   const [selectedEmoji, setSelectedEmoji] = useState("")
+  const [selectEmojiModal, setSelectEmojiModal] = useState(false)
 
   const emojiList = [
     "⚽️",
@@ -30,13 +33,49 @@ export default function AddModal({ open, onClose, theme, emojis }) {
     gym
   */
 
-  const filteredEmojis = emojiList.filter((emoji) => {
-    return emojis && !emojis.some((obj) => obj.emoji === emoji)
-  })
+  const filteredEmojis = useMemo(
+    () =>
+      emojiList.filter((emoji) => {
+        return emojis && !emojis.some((obj) => obj.emoji === emoji)
+      }),
+    [emojis]
+  )
 
   useEffect(() => {
     setSelectedEmoji(filteredEmojis[0])
   }, [filteredEmojis])
+
+  const handleAddClick = async () => {
+    if (input.length === 0) {
+      setError(true)
+    } else {
+      try {
+        onClose()
+        const documentRef = doc(db, "emojis", id)
+        const documentSnapshot = await getDoc(documentRef)
+
+        const existingData = documentSnapshot.data()
+        console.log(existingData)
+        existingData.emojis.push({
+          emoji: selectedEmoji,
+          description: input,
+        })
+
+        await setDoc(documentRef, existingData)
+      } catch (error) {
+        console.error("Error: ", error)
+      }
+    }
+  }
+
+  const Background = () => {
+    return (
+      <div
+        className="fixed inset-0 bg-black opacity-50"
+        onClick={onClose}
+      ></div>
+    )
+  }
 
   return (
     <div
@@ -44,10 +83,7 @@ export default function AddModal({ open, onClose, theme, emojis }) {
         open ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
-      <div
-        className="fixed inset-0 bg-black opacity-50"
-        onClick={onClose}
-      ></div>
+      <Background />
       <div
         style={{ padding: "0px" }}
         className={`absolute ${
@@ -56,7 +92,14 @@ export default function AddModal({ open, onClose, theme, emojis }) {
       >
         <div className="mt-7">
           <div className="flex justify-center">
-            <h2 className="text-3xl border border-dashed p-2 select-none cursor-pointer">{selectedEmoji}</h2>
+            <h2
+              className={`text-3xl border border-dashed p-2 select-none cursor-pointer ${
+                theme === "dark" ? "border-white" : "border-black"
+              }`}
+              onClick={() => setSelectEmojiModal(true)}
+            >
+              {selectedEmoji}
+            </h2>
           </div>
           <div className="mb-5 mt-7">
             <div className="flex justify-center mb-2">
@@ -74,7 +117,10 @@ export default function AddModal({ open, onClose, theme, emojis }) {
               </h3>
             )}
             <div className="flex justify-center mt-5 gap-7">
-              <button className="rounded-2xl py-1 px-6 bg-buttonBlue">
+              <button
+                className="rounded-2xl py-1 px-6 bg-buttonBlue"
+                onClick={() => handleAddClick()}
+              >
                 Add
               </button>
               <button
@@ -90,6 +136,13 @@ export default function AddModal({ open, onClose, theme, emojis }) {
           </div>
         </div>
       </div>
+      <SelectEmojiModal
+        open={selectEmojiModal}
+        onClose={() => setSelectEmojiModal(false)}
+        theme={theme}
+        filteredEmojis={filteredEmojis}
+        setSelectedEmoji={setSelectedEmoji}
+      />
     </div>
   )
 }
