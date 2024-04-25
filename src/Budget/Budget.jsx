@@ -19,7 +19,7 @@ export default function Budget({ theme, user }) {
   const [renameModalOpen, setRenameModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [removeButtons, setRemoveButtons] = useState(false)
-  const [addModal, setAddModalOpen] = useState(true)
+  const [addModal, setAddModalOpen] = useState(false)
   const [currentDay, setCurrentDay] = useState("")
 
   const { id } = useParams()
