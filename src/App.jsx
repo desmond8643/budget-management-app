@@ -41,7 +41,7 @@ function App() {
           />
           <Route path={ROUTES.EMOJI} element={<ExpenseEmoji theme={theme} user={user} />} />
           <Route>
-            <Route path="/budget/:id" element={<Budget theme={theme} />} />
+            <Route path="/budget/:id" element={<Budget user={user} theme={theme} />} />
           </Route>
         </Route>
         <Route path="*" element={<NotFound theme={theme} />} />

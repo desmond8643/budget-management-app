@@ -11,20 +11,22 @@ import DeleteModal from "./DeleteModal"
 import AddModal from "./AddModal"
 import { useParams, useNavigate } from "react-router-dom"
 import { onSnapshot } from "firebase/firestore"
-import { weeklyCollectionRef } from "../lib/firestoreCollections"
+import { weeklyCollectionRef, emojisCollectionRef } from "../lib/firestoreCollections"
 import * as ROUTES from "../routes"
 import { calculateAllSum } from "./logic"
 
-export default function Budget({ theme }) {
+export default function Budget({ theme, user }) {
   const [renameModalOpen, setRenameModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [removeButtons, setRemoveButtons] = useState(false)
-  const [addModal, setAddModalOpen] = useState(false)
+  const [addModal, setAddModalOpen] = useState(true)
   const [currentDay, setCurrentDay] = useState("")
 
   const { id } = useParams()
   const [budget, setBudget] = useState({})
   const [eventId, setEventId] = useState("")
+
+  const [emojisObj, setEmojisObj] = useState({})
 
   let formattedDate = ""
 
@@ -35,6 +37,12 @@ export default function Budget({ theme }) {
       const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
       setBudget(docs.find((doc) => doc.id === id))
     })
+
+    const getEmoji = onSnapshot(emojisCollectionRef, (snapshot) => {
+      const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      setEmojisObj(docs.find((doc) => doc.userId === user.uid))
+    })
+    
   }, [])
 
   const {
@@ -163,11 +171,23 @@ export default function Budget({ theme }) {
           ${calculateAllSum(budget)}
         </h2>
       </div>
-      <DayComponent arr={monday} day={"Monday"} color={theme === 'dark' ? '#19376D' : "#0CC0DF"} />
-      <DayComponent arr={tuesday} day={"Tuesday"} color={theme === 'dark' ? '#0F4C75' : "#38B6FF"} />
+      <DayComponent
+        arr={monday}
+        day={"Monday"}
+        color={theme === "dark" ? "#19376D" : "#0CC0DF"}
+      />
+      <DayComponent
+        arr={tuesday}
+        day={"Tuesday"}
+        color={theme === "dark" ? "#0F4C75" : "#38B6FF"}
+      />
       <DayComponent arr={wednesday} day={"Wednesday"} color={"#5271FF"} />
       <DayComponent arr={thursday} day={"Thursday"} color={"#9D44C0"} />
-      <DayComponent arr={friday} day={"Friday"} color={theme === 'dark' ? '#2B3595' : "#87C4FF"} />
+      <DayComponent
+        arr={friday}
+        day={"Friday"}
+        color={theme === "dark" ? "#2B3595" : "#87C4FF"}
+      />
       <DayComponent arr={saturday} day={"Saturday"} color={"#7B66FF"} />
       <DayComponent arr={sunday} day={"Sunday"} color={"#3876BF"} />
       <RenameModal
@@ -192,6 +212,7 @@ export default function Budget({ theme }) {
         day={currentDay}
         id={id}
         theme={theme}
+        emojisObj={emojisObj}
       />
     </div>
   )
