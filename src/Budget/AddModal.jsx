@@ -37,13 +37,13 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
       const documentSnapshot = await getDoc(documentRef)
 
       const existingData = documentSnapshot.data()
-      
+
       const obj = {
         id: addId,
         title: titleInput,
         cost: costInput,
       }
-      
+
       if (selectedEmoji !== "None") {
         obj.emoji = selectedEmoji
       }
@@ -67,14 +67,13 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
     const { emojis } = emojisObj
 
     const ShowSelectedEmoji = () => {
-      const description =  selectedEmoji && emojis.find((emoji) => emoji.emoji === selectedEmoji)
-      .description
+      const description =
+        selectedEmoji &&
+        emojis.find((emoji) => emoji.emoji === selectedEmoji).description
 
       return (
         <h2>
-          {selectedEmoji &&
-            selectedEmoji !== "None" &&
-           selectedEmoji}{" "}
+          {selectedEmoji && selectedEmoji !== "None" && selectedEmoji}{" "}
           {description
             ? description?.length > 25
               ? description?.substring(0, 25) + "..."
@@ -149,6 +148,9 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
                       setSelectedEmoji(obj?.emoji)
                       setOpenSelect(false)
                       setInputValue("")
+                      if (titleInput === "") {
+                        setTitleInput(obj?.description)
+                      }
                     }
                   }}
                 >
