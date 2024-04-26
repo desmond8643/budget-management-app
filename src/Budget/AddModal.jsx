@@ -148,9 +148,7 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
                       setSelectedEmoji(obj?.emoji)
                       setOpenSelect(false)
                       setInputValue("")
-                      if (titleInput === "") {
-                        setTitleInput(obj?.description)
-                      }
+                      setTitleInput(obj?.description)
                     }
                   }}
                 >
