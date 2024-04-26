@@ -11,7 +11,10 @@ import DeleteModal from "./DeleteModal"
 import AddModal from "./AddModal"
 import { useParams, useNavigate } from "react-router-dom"
 import { onSnapshot } from "firebase/firestore"
-import { weeklyCollectionRef, emojisCollectionRef } from "../lib/firestoreCollections"
+import {
+  weeklyCollectionRef,
+  emojisCollectionRef,
+} from "../lib/firestoreCollections"
 import * as ROUTES from "../routes"
 import { calculateAllSum } from "./logic"
 
@@ -42,7 +45,6 @@ export default function Budget({ theme, user }) {
       const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
       setEmojisObj(docs.find((doc) => doc.userId === user.uid))
     })
-    
   }, [])
 
   const {
@@ -78,7 +80,7 @@ export default function Budget({ theme, user }) {
 
     const sum = calculateSum(arr).toFixed(2)
 
-    const Object = ({ title, cost, id }) => {
+    const Object = ({ title, cost, id, emoji }) => {
       return (
         <div className="flex" style={{ justifyContent: "space-between" }}>
           <div className="flex">
@@ -92,6 +94,9 @@ export default function Budget({ theme, user }) {
                   setEventId(id)
                 }}
               />
+            )}
+            {emoji && !removeButtons && (
+              <p style={{ fontSize: "18px" }}>{emoji}</p>
             )}
             <p style={{ fontSize: "18px" }}>{title}</p>
           </div>
@@ -121,7 +126,9 @@ export default function Budget({ theme, user }) {
           {arr && arr.length > 0 ? (
             arr.map((event) => {
               const { title, cost, id } = event
-              return <Object title={title} cost={cost} id={id} />
+              return (
+                <Object title={title} cost={cost} id={id} emoji={event.emoji} />
+              )
             })
           ) : (
             <h2>No Events</h2>

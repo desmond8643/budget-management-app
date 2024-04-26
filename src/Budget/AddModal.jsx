@@ -37,11 +37,18 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
       const documentSnapshot = await getDoc(documentRef)
 
       const existingData = documentSnapshot.data()
-      existingData[day.toLowerCase()].push({
+      
+      const obj = {
         id: addId,
         title: titleInput,
         cost: costInput,
-      })
+      }
+      
+      if (selectedEmoji !== "None") {
+        obj.emoji = selectedEmoji
+      }
+
+      existingData[day.toLowerCase()].push(obj)
 
       await setDoc(documentRef, existingData)
 
@@ -60,15 +67,18 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
     const { emojis } = emojisObj
 
     const ShowSelectedEmoji = () => {
+      const description =  selectedEmoji && emojis.find((emoji) => emoji.emoji === selectedEmoji)
+      .description
+
       return (
         <h2>
-          {selectedEmoji && selectedEmoji !== "None" &&
-            emojis.find((emoji) => emoji.description === selectedEmoji)
-              .emoji}{" "}
-          {selectedEmoji
-            ? selectedEmoji?.length > 25
-              ? selectedEmoji?.substring(0, 25) + "..."
-              : selectedEmoji
+          {selectedEmoji &&
+            selectedEmoji !== "None" &&
+           selectedEmoji}{" "}
+          {description
+            ? description?.length > 25
+              ? description?.substring(0, 25) + "..."
+              : description
             : "Select Expense Emoji"}
         </h2>
       )
@@ -108,7 +118,7 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
               />
             </div>
             <li
-              className='p-2 text-sm hover:bg-sky-600 hover:text-white'
+              className="p-2 text-sm hover:bg-sky-600 hover:text-white"
               onClick={() => {
                 setSelectedEmoji("None")
                 setOpenSelect(false)
@@ -136,7 +146,7 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
                       obj?.description?.toLowerCase() !==
                       selectedEmoji.toLowerCase()
                     ) {
-                      setSelectedEmoji(obj?.description)
+                      setSelectedEmoji(obj?.emoji)
                       setOpenSelect(false)
                       setInputValue("")
                     }
