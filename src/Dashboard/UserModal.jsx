@@ -4,7 +4,8 @@ import {
   BsBoxArrowRight,
   BsToggleOff,
   BsToggleOn,
-  BsEmojiSmile
+  BsEmojiSmile,
+  BsBarChartLineFill,
 } from "react-icons/bs"
 import * as ROUTES from "../routes"
 import { useNavigate } from "react-router-dom"
@@ -49,6 +50,20 @@ export default function UserModal({
           className="flex mt-3 mb-5 cursor-pointer"
           style={{ justifyContent: "space-around" }}
         >
+          <BsBarChartLineFill className="text-3xl" />
+          <h2
+            className="mr-8"
+            onClick={() => {
+              navigate(ROUTES.STATISTICS)
+            }}
+          >
+            Statistics
+          </h2>
+        </div>
+        <div
+          className="flex mt-3 mb-5 cursor-pointer"
+          style={{ justifyContent: "space-around" }}
+        >
           <BsEmojiSmile className="text-3xl ml-3" />
           <h2
             className="mr-5"
@@ -59,22 +74,35 @@ export default function UserModal({
             Emoji Expenses
           </h2>
         </div>
-        {theme === "light" && (
-          <div
-            className="flex mt-3 mb-2 cursor-pointer"
-            style={{ justifyContent: "space-around" }}
-          >
-            <h2 className="ml-5">Light Mode</h2>
-            <BsToggleOff
-              className="text-3xl cursor-pointer"
-              onClick={() => {
-                setTheme("dark")
-                localStorage.setItem("theme", "dark")
-              }}
-            />
-          </div>
-        )}
-        {theme === "dark" && (
+        <div
+          className="flex mt-3 mb-2 select-none"
+          style={{ justifyContent: "space-around" }}
+        >
+          {theme === "dark" ? (
+            <>
+              <h2 className="ml-5">Light Mode</h2>
+              <BsToggleOn
+                className="text-3xl cursor-pointer"
+                onClick={() => {
+                  setTheme("light")
+                  localStorage.setItem("theme", "light")
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <h2 className="ml-5">Dark Mode</h2>
+              <BsToggleOff
+                className="text-3xl cursor-pointer"
+                onClick={() => {
+                  setTheme("dark")
+                  localStorage.setItem("theme", "dark")
+                }}
+              />
+            </>
+          )}
+        </div>
+        {/* {theme === "dark" && (
           <div
             className="flex mt-3 mb-2 cursor-pointer"
             style={{ justifyContent: "space-around" }}
@@ -88,7 +116,7 @@ export default function UserModal({
               }}
             />
           </div>
-        )}
+        )} */}
         <div
           className="flex mt-3 mb-2 cursor-pointer"
           style={{ justifyContent: "space-around" }}
