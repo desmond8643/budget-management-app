@@ -47,32 +47,28 @@ export default function UserModal({
         </div>
         <hr></hr>
         <div
-          className="flex mt-3 mb-5 cursor-pointer"
+          className={`flex mt-2 mb-2 cursor-pointer select-none pt-3 pb-2 ${
+            theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
+          }`}
           style={{ justifyContent: "space-around" }}
+          onClick={() => {
+            navigate(ROUTES.STATISTICS)
+          }}
         >
           <BsBarChartLineFill className="text-3xl" />
-          <h2
-            className="mr-8"
-            onClick={() => {
-              navigate(ROUTES.STATISTICS)
-            }}
-          >
-            Statistics
-          </h2>
+          <h2 className="mr-8">Statistics</h2>
         </div>
         <div
-          className="flex mt-3 mb-5 cursor-pointer"
+          className={`flex mt-2 mb-2 cursor-pointer pt-3 pb-2 ${
+            theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
+          }`}
           style={{ justifyContent: "space-around" }}
+          onClick={() => {
+            navigate(ROUTES.EMOJI)
+          }}
         >
           <BsEmojiSmile className="text-3xl ml-3" />
-          <h2
-            className="mr-5"
-            onClick={() => {
-              navigate(ROUTES.EMOJI)
-            }}
-          >
-            Emoji Expenses
-          </h2>
+          <h2 className="mr-5">Emoji Expenses</h2>
         </div>
         <div
           className="flex mt-3 mb-2 select-none"
@@ -102,35 +98,18 @@ export default function UserModal({
             </>
           )}
         </div>
-        {/* {theme === "dark" && (
-          <div
-            className="flex mt-3 mb-2 cursor-pointer"
-            style={{ justifyContent: "space-around" }}
-          >
-            <h2 className="ml-5">Dark Mode</h2>
-            <BsToggleOn
-              className="text-3xl cursor-pointer"
-              onClick={() => {
-                setTheme("light")
-                localStorage.setItem("theme", "light")
-              }}
-            />
-          </div>
-        )} */}
         <div
-          className="flex mt-3 mb-2 cursor-pointer"
+          className={`flex mt-2 mb-2 cursor-pointer pt-3 pb-2 ${
+            theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-200"
+          }`}
           style={{ justifyContent: "space-around" }}
+          onClick={() => {
+            firebase.auth().signOut()
+            navigate(ROUTES.LOGIN)
+          }}
         >
           <BsBoxArrowRight className="text-3xl" />
-          <h2
-            className="mr-5"
-            onClick={() => {
-              firebase.auth().signOut()
-              navigate(ROUTES.LOGIN)
-            }}
-          >
-            Logout
-          </h2>
+          <h2 className="mr-5">Logout</h2>
         </div>
       </div>
     </div>
