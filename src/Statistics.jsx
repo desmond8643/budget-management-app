@@ -39,6 +39,7 @@ export default function Statistics({ user, theme }) {
             return { ...obj, cost: 0 }
           })
         : []
+
     let otherCost = 0
 
     const days = [
@@ -50,12 +51,16 @@ export default function Statistics({ user, theme }) {
       "saturday",
       "sunday",
     ]
+
     if (expenseEmojis.length > 0) {
       weekly.forEach((week) => {
         days.forEach((day) => {
           week[day].forEach((expense) => {
             const { emoji, cost } = expense
-            if (!emoji) {
+            if (
+              !emoji ||
+              !emojisObjectArr.find((emojiObj) => emojiObj.emoji === emoji)
+            ) {
               otherCost += parseFloat(cost)
             } else {
               emojisObjectArr.forEach((emojiObj) => {
@@ -67,6 +72,7 @@ export default function Statistics({ user, theme }) {
           })
         })
       })
+
       emojisObjectArr.push({ emoji: "", cost: otherCost, description: "Other" })
     }
 

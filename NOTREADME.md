@@ -22,6 +22,9 @@ weekly: contains all weekly budgets
 how to get budget list?
 - with user id
 
+handling expense emoji
+- delete expense emoji representing with the emoji will lead to the expenses calculated as other in statistic if there is no expense emoji represented with the emoji
+
 Problem solved
 
 - env to hide api key
