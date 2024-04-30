@@ -3,35 +3,13 @@ import SelectEmojiModal from "./SelectEmojiModal"
 import { emojisCollectionRef } from "../lib/firestoreCollections"
 import { db } from "../lib/firebase"
 import { doc, getDoc, setDoc } from "firebase/firestore"
+import { emojiList } from "./emojiList"
 
 export default function AddModal({ open, onClose, theme, emojis, id }) {
   const [error, setError] = useState(false)
   const [input, setInput] = useState("")
   const [selectedEmoji, setSelectedEmoji] = useState("")
   const [selectEmojiModal, setSelectEmojiModal] = useState(false)
-
-  const emojiList = [
-    "⚽️",
-    "🎧",
-    "🚌",
-    "✈️",
-    "🍗",
-    "🎮",
-    "🛒",
-    "🐶",
-    "💊",
-    "🥤",
-    "👕",
-    "👟",
-    "💪🏻",
-  ]
-  /*
-    emoji
-    sports, music, transport, flight, 
-    food, entertainment, shopping, pet
-    medical, drink, clothing, shoes, 
-    gym
-  */
 
   const filteredEmojis = useMemo(
     () =>
