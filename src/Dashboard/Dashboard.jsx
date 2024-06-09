@@ -11,7 +11,7 @@ import DeleteModal from "./DeleteModal"
 import AddModal from "./AddModal"
 import UserModal from "./UserModal"
 import { getUserBudgetByUsername } from "../services/firebase"
-import { onSnapshot } from "firebase/firestore"
+import { onSnapshot, orderBy, query, where } from "firebase/firestore"
 import { weeklyCollectionRef } from "../lib/firestoreCollections"
 import { calculateAllSum } from "../Budget/logic"
 
@@ -28,10 +28,23 @@ export default function Dashboard({ user, theme, setTheme }) {
 
   useEffect(() => {
     async function getBudgets() {
+      //   const getUserInfo = await getUserBudgetByUsername(user.displayName)
+      //   const getWeeklySnapshot = onSnapshot(weeklyCollectionRef, (snapshot) => {
+      //     const arr = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+      //     setBudgets(arr.filter((doc) => doc.userId === getUserInfo.userId))
+      //   })
+      // }
+      // getBudgets()
       const getUserInfo = await getUserBudgetByUsername(user.displayName)
-      const getWeeklySnapshot = onSnapshot(weeklyCollectionRef, (snapshot) => {
+      // const weeklyCollectionRef = collection(db, "budgets")
+      const q = query(
+        weeklyCollectionRef,
+        where("userId", "==", getUserInfo.userId),
+        orderBy("dateCreated", "desc")
+      )
+      const getWeeklySnapshot = onSnapshot(q, (snapshot) => {
         const arr = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        setBudgets(arr.filter((doc) => doc.userId === getUserInfo.userId))
+        setBudgets(arr)
       })
     }
     getBudgets()
@@ -86,7 +99,11 @@ export default function Dashboard({ user, theme, setTheme }) {
   }
 
   return (
-    <div className={`pt-5 px-5 ${theme === 'dark' && 'bg-backgroundDark text-white'}`}>
+    <div
+      className={`pt-5 px-5 ${
+        theme === "dark" && "bg-backgroundDark text-white"
+      }`}
+    >
       <div
         style={{ display: "flex", justifyContent: "space-between" }}
         className="items-center mb-8"
@@ -98,7 +115,11 @@ export default function Dashboard({ user, theme, setTheme }) {
           onClick={() => setUserModalOpen(true)}
         />
       </div>
-      <div className={`rounded-3xl border-2 w-auto h-screen ${theme === 'dark' && "bg-foregroundDark"}`}>
+      <div
+        className={`rounded-3xl border-2 w-auto h-screen ${
+          theme === "dark" && "bg-foregroundDark"
+        }`}
+      >
         {budgets.length === 0 ? (
           <div className="flex justify-center items-center h-screen">
             <h1 className="text-4xl font-semibold">No budget list yet</h1>

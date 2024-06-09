@@ -52,7 +52,7 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
 
       await setDoc(documentRef, existingData)
 
-      setTitleInput("")
+      // setTitleInput("")
       setCostInput("")
       setTitleError(false)
       setCostError(false)
@@ -193,6 +193,9 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
                 onChange={({ target }) => setCostInput(target.value)}
                 value={costInput}
                 maxLength="20"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddClick()
+                }}
               />
             </div>
             <div className="flex justify-center mb-2">
@@ -204,6 +207,9 @@ export default function AddModal({ open, onClose, day, id, theme, emojisObj }) {
                 onChange={({ target }) => setTitleInput(target.value)}
                 value={titleInput}
                 placeholder="Description"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddClick()
+                }}
               />
             </div>
 
