@@ -57,6 +57,9 @@ export default function RenameModal({
                 className={`w-52 border ${theme === 'dark' ? 'bg-backgroundDark': 'border-black'}`}
                 value={input}
                 onChange={({ target }) => setInput(target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddClick()
+                }}
               />
             </div>
             <h3 className="text-center text-red-500 font-semibold">

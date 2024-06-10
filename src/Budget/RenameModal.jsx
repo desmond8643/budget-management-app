@@ -51,6 +51,9 @@ export default function RenameModal({ open, onClose, title, id, theme }) {
                 }`}
                 value={input}
                 onChange={({ target }) => setInput(target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddClick()
+                }}
               />
             </div>
             {error && (

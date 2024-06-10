@@ -119,6 +119,15 @@ export default function Budget({ theme, user }) {
                 setCurrentDay(day)
               }}
             />
+            <BsDashCircle
+              style={{
+                color: `${
+                  removeButtons ? "red" : theme === "dark" ? "white" : "black"
+                }`,
+              }}
+              className="text-2xl cursor-pointer text-[30px] mt-1 ml-2"
+              onClick={() => setRemoveButtons((prevState) => !prevState)}
+            />
           </div>
           <h2 className="text-2xl font-semibold">${sum}</h2>
         </div>

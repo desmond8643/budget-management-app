@@ -28,15 +28,7 @@ export default function Dashboard({ user, theme, setTheme }) {
 
   useEffect(() => {
     async function getBudgets() {
-      //   const getUserInfo = await getUserBudgetByUsername(user.displayName)
-      //   const getWeeklySnapshot = onSnapshot(weeklyCollectionRef, (snapshot) => {
-      //     const arr = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-      //     setBudgets(arr.filter((doc) => doc.userId === getUserInfo.userId))
-      //   })
-      // }
-      // getBudgets()
       const getUserInfo = await getUserBudgetByUsername(user.displayName)
-      // const weeklyCollectionRef = collection(db, "budgets")
       const q = query(
         weeklyCollectionRef,
         where("userId", "==", getUserInfo.userId),

@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useState, useMemo } from "react"
 import SelectEmojiModal from "./SelectEmojiModal"
-import { emojisCollectionRef } from "../lib/firestoreCollections"
 import { db } from "../lib/firebase"
 import { doc, getDoc, setDoc } from "firebase/firestore"
 import { emojiList } from "./emojiList"
@@ -87,6 +86,9 @@ export default function AddModal({ open, onClose, theme, emojis, id }) {
                   theme === "dark" ? "bg-backgroundDark" : "border-black"
                 } text-center`}
                 onChange={({ target }) => setInput(target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddClick()
+                }}
               />
             </div>
             {error && (

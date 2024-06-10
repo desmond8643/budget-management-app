@@ -76,11 +76,9 @@ export default function Statistics({ user, theme }) {
       emojisObjectArr.push({ emoji: "", cost: otherCost, description: "Other" })
     }
 
-    const component = {
-      sortedData: emojisObjectArr.sort((a, b) => b.cost - a.cost),
-      totalCost: emojisObjectArr.reduce((sum, obj) => sum + obj.cost, 0),
-    }
-    const { sortedData, totalCost } = component
+    const sortedData = emojisObjectArr.sort((a, b) => b.cost - a.cost)
+    const totalCost = emojisObjectArr.reduce((sum, obj) => sum + obj.cost, 0).toFixed(2)
+
     setTotalCost(totalCost)
 
     return (

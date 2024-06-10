@@ -1,4 +1,4 @@
-import { Timestamp, addDoc, serverTimestamp } from "firebase/firestore"
+import { addDoc, serverTimestamp } from "firebase/firestore"
 import React, { useState } from "react"
 import { weeklyCollectionRef } from "../lib/firestoreCollections"
 
@@ -56,6 +56,9 @@ export default function AddModal({ open, onClose, userId, theme }) {
                 type="text"
                 className={`w-52 border ${theme === 'dark' ? 'bg-backgroundDark': 'border-black'}`}
                 onChange={({ target }) => setInput(target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddClick()
+                }}
               />
             </div>
             {error && (
