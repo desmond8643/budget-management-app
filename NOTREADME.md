@@ -36,3 +36,5 @@ Problem solved
     - check tailwind.config to see if the file is in the content
 - can't make changes to array in firebase
     - check spelling (like upper and lower case)
+
+- Testing
